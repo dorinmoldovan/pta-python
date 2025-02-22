@@ -1,6 +1,6 @@
 # pta-python
 
-A Python implementation of the Plum Tree Algorithm.
+A Python implementation of the Plum Tree Algorithm (PTA)
 
 ## Acknowledgments
 
