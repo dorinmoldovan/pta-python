@@ -3,6 +3,10 @@ from PyQt6.QtCore import QTimer, QRect, Qt
 from PyQt6.QtGui import QIntValidator, QDoubleValidator, QPalette, QColor, QPixmap
 
 class App(QWidget):
+    N_DEFAULT_VALUE = "50"
+    I_DEFAULT_VALUE = "1000"
+    D_DEFAULT_VALUE = "30"
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -19,7 +23,8 @@ class App(QWidget):
         
         self.input1 = QLineEdit(self)
         self.input1.setPlaceholderText("")
-        self.input1.setValidator(QIntValidator())
+        self.input1.setValidator(QIntValidator(0, 2147483647))
+        self.input1.setText(self.N_DEFAULT_VALUE)
         self.input1.setGeometry(QRect(250, 50, 120, 25))
         self.input1.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
@@ -28,7 +33,8 @@ class App(QWidget):
         
         self.input2 = QLineEdit(self)
         self.input2.setPlaceholderText("")
-        self.input2.setValidator(QIntValidator())
+        self.input2.setValidator(QIntValidator(0, 2147483647))
+        self.input2.setText(self.I_DEFAULT_VALUE)
         self.input2.setGeometry(QRect(250, 80, 120, 25))
         self.input2.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
@@ -37,7 +43,8 @@ class App(QWidget):
         
         self.input3 = QLineEdit(self)
         self.input3.setPlaceholderText("")
-        self.input3.setValidator(QIntValidator())
+        self.input3.setValidator(QIntValidator(0, 2147483647))
+        self.input3.setText(self.D_DEFAULT_VALUE)
         self.input3.setGeometry(QRect(250, 110, 120, 25))
         self.input3.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
@@ -166,12 +173,41 @@ class App(QWidget):
 
         self.setWindowTitle("Plum Tree Algorithm (PTA)")
         self.setFixedSize(800, 950)
+
+        self.N = None
+        self.I = None
+        self.iterations = 0  
+
         self.show()
 
     def on_submit(self):
+        self.N = int(self.input1.text())
+        self.I = int(self.input2.text())
+        self.console.clear()  
+        self.submit_button.setText("Reset Simulation") 
+        self.submit_button.clicked.disconnect()
+        self.submit_button.clicked.connect(self.on_reset) 
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.display_message)
+        self.timer.timeout.connect(self.update_gui)
         self.timer.start(1000)
 
-    def display_message(self):
-        self.console.append("Hello World !!!")
+    def update_gui(self):
+        if self.iterations < self.I:
+            self.iterations += 1
+            self.console.append(f"Iteration = {self.iterations}")
+        else:
+            self.timer.stop()  
+            self.submit_button.setText("Reset Simulation")  
+            self.submit_button.clicked.disconnect()
+            self.submit_button.clicked.connect(self.on_reset) 
+    
+    def on_reset(self):
+        self.timer.stop()
+        self.console.clear() 
+        self.iterations = 0  
+        self.input1.setText(self.N_DEFAULT_VALUE)  
+        self.input2.setText(self.I_DEFAULT_VALUE)
+        self.input3.setText(self.D_DEFAULT_VALUE)
+        self.submit_button.setText("Start Simulation")  
+        self.submit_button.clicked.disconnect()
+        self.submit_button.clicked.connect(self.on_submit)  
