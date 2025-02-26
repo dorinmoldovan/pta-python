@@ -1,11 +1,17 @@
 from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QTextEdit, QLabel, QComboBox
-from PyQt6.QtCore import QTimer, QRect, Qt
-from PyQt6.QtGui import QIntValidator, QDoubleValidator, QPalette, QColor, QPixmap
+from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
+from PyQt6.QtGui import QIntValidator, QDoubleValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
 
 class App(QWidget):
     N_DEFAULT_VALUE = "50"
     I_DEFAULT_VALUE = "1000"
-    D_DEFAULT_VALUE = "30"
+    FT_DEFAULT_VALUE = "0.8"
+    RT_DEFAULT_VALUE = "0.2"
+    FR_MIN_VALUE = "0.5"
+    FR_MAX_VALUE = "1"
+    EPS_VALUE = "1.e-300"
+    OF_VALUE = "f1"
+    ITERATION_RATE_VALUE = "0"
 
     def __init__(self):
         super().__init__()
@@ -18,94 +24,93 @@ class App(QWidget):
 
         self.setGeometry(500, 50, 800, 950)
 
-        self.input1_label = QLabel("Number of plums (N):", self)
-        self.input1_label.setGeometry(QRect(50, 50, 150, 30))
-        
-        self.input1 = QLineEdit(self)
-        self.input1.setPlaceholderText("")
-        self.input1.setValidator(QIntValidator(0, 2147483647))
-        self.input1.setText(self.N_DEFAULT_VALUE)
-        self.input1.setGeometry(QRect(250, 50, 120, 25))
-        self.input1.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        double_validator = QRegularExpressionValidator(QRegularExpression(r'^(0|0\.\d+|1(\.0+)?|0(\.\d+)?([eE][+-]?\d+)?|1(\.0+)?([eE][+-]?\d+)?)$'), self)
 
-        self.input2_label = QLabel("Number of iterations (I):", self)
-        self.input2_label.setGeometry(QRect(50, 80, 150, 30))
+        self.input_n_label = QLabel("Number of plums (N):", self)
+        self.input_n_label.setGeometry(QRect(50, 50, 150, 30))
         
-        self.input2 = QLineEdit(self)
-        self.input2.setPlaceholderText("")
-        self.input2.setValidator(QIntValidator(0, 2147483647))
-        self.input2.setText(self.I_DEFAULT_VALUE)
-        self.input2.setGeometry(QRect(250, 80, 120, 25))
-        self.input2.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_n = QLineEdit(self)
+        self.input_n.setPlaceholderText("")
+        self.input_n.setValidator(QIntValidator(0, 2147483647))
+        self.input_n.setText(self.N_DEFAULT_VALUE)
+        self.input_n.setGeometry(QRect(250, 50, 120, 25))
+        self.input_n.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input3_label = QLabel("Number of dimensions (D):", self)
-        self.input3_label.setGeometry(QRect(50, 110, 150, 30)) 
+        self.input_i_label = QLabel("Number of iterations (I):", self)
+        self.input_i_label.setGeometry(QRect(50, 80, 150, 30))
         
-        self.input3 = QLineEdit(self)
-        self.input3.setPlaceholderText("")
-        self.input3.setValidator(QIntValidator(0, 2147483647))
-        self.input3.setText(self.D_DEFAULT_VALUE)
-        self.input3.setGeometry(QRect(250, 110, 120, 25))
-        self.input3.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_i = QLineEdit(self)
+        self.input_i.setPlaceholderText("")
+        self.input_i.setValidator(QIntValidator(0, 2147483647))
+        self.input_i.setText(self.I_DEFAULT_VALUE)
+        self.input_i.setGeometry(QRect(250, 80, 120, 25))
+        self.input_i.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input4_label = QLabel("Fruitiness threshold (FT):", self)
-        self.input4_label.setGeometry(QRect(50, 140, 150, 30))
+        self.input_ft_label = QLabel("Fruitiness threshold (FT):", self)
+        self.input_ft_label.setGeometry(QRect(50, 110, 150, 30))
         
-        self.input4 = QLineEdit(self)
-        self.input4.setPlaceholderText("")
-        self.input4.setValidator(QDoubleValidator())
-        self.input4.setGeometry(QRect(250, 140, 120, 25))
-        self.input4.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_ft = QLineEdit(self)
+        self.input_ft.setPlaceholderText("")
+        self.input_ft.setValidator(double_validator)
+        self.input_ft.setText(self.FT_DEFAULT_VALUE)
+        self.input_ft.setGeometry(QRect(250, 110, 120, 25))
+        self.input_ft.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input5_label = QLabel("Ripeness threshold (RT):", self)
-        self.input5_label.setGeometry(QRect(50, 170, 150, 30))
+        self.input_rt_label = QLabel("Ripeness threshold (RT):", self)
+        self.input_rt_label.setGeometry(QRect(50, 140, 150, 30))
         
-        self.input5 = QLineEdit(self)
-        self.input5.setPlaceholderText("")
-        self.input5.setValidator(QDoubleValidator())
-        self.input5.setGeometry(QRect(250, 170, 120, 25))
-        self.input5.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_rt = QLineEdit(self)
+        self.input_rt.setPlaceholderText("")
+        self.input_rt.setValidator(double_validator)
+        self.input_rt.setText(self.RT_DEFAULT_VALUE)
+        self.input_rt.setGeometry(QRect(250, 140, 120, 25))
+        self.input_rt.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input6_label = QLabel("Minimum fruitiness rate (FR_min):", self)
-        self.input6_label.setGeometry(QRect(50, 200, 200, 30))
+        self.input_fr_min_label = QLabel("Minimum fruitiness rate (FR_min):", self)
+        self.input_fr_min_label.setGeometry(QRect(50, 170, 200, 30))
         
-        self.input6 = QLineEdit(self)
-        self.input6.setPlaceholderText("")
-        self.input6.setValidator(QDoubleValidator())
-        self.input6.setGeometry(QRect(250, 200, 120, 25))
-        self.input6.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_fr_min = QLineEdit(self)
+        self.input_fr_min.setPlaceholderText("")
+        self.input_fr_min.setValidator(double_validator)
+        self.input_fr_min.setText(self.FR_MIN_VALUE)
+        self.input_fr_min.setGeometry(QRect(250, 170, 120, 25))
+        self.input_fr_min.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input7_label = QLabel("Maximum fruitiness rate (FR_max):", self)
-        self.input7_label.setGeometry(QRect(50, 230, 200, 30))
+        self.input_fr_max_label = QLabel("Maximum fruitiness rate (FR_max):", self)
+        self.input_fr_max_label.setGeometry(QRect(50, 200, 200, 30))
         
-        self.input7 = QLineEdit(self)
-        self.input7.setPlaceholderText("")
-        self.input7.setValidator(QDoubleValidator())
-        self.input7.setGeometry(QRect(250, 230, 120, 25))
-        self.input7.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_fr_max = QLineEdit(self)
+        self.input_fr_max.setPlaceholderText("")
+        self.input_fr_max.setValidator(double_validator)
+        self.input_fr_max.setText(self.FR_MAX_VALUE)
+        self.input_fr_max.setGeometry(QRect(250, 200, 120, 25))
+        self.input_fr_max.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.input8_label = QLabel("Epsilon (eps):", self)
-        self.input8_label.setGeometry(QRect(50, 260, 150, 30))
+        self.input_eps_label = QLabel("Epsilon (eps):", self)
+        self.input_eps_label.setGeometry(QRect(50, 230, 150, 30))
         
-        self.input8 = QLineEdit(self)
-        self.input8.setPlaceholderText("")
-        self.input8.setValidator(QDoubleValidator())
-        self.input8.setGeometry(QRect(250, 260, 120, 25))
-        self.input8.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.input_eps = QLineEdit(self)
+        self.input_eps.setPlaceholderText("")
+        self.input_eps.setValidator(double_validator)
+        self.input_eps.setText(self.EPS_VALUE)
+        self.input_eps.setGeometry(QRect(250, 230, 120, 25))
+        self.input_eps.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.of_label = QLabel("Objective function (OF):", self)
-        self.of_label.setGeometry(QRect(50, 290, 150, 30))
+        self.of_label.setGeometry(QRect(50, 260, 150, 30))
 
         self.of_dropdown = QComboBox(self)
-        self.of_dropdown.setGeometry(QRect(250, 290, 120, 25))
+        self.of_dropdown.setGeometry(QRect(250, 260, 120, 25))
         self.of_dropdown.addItems([f'f{i}' for i in range(1, 8)] + [f'g{i}' for i in range(1, 8)] + [f'h{i}' for i in range(1, 11)])
+        self.of_dropdown.setCurrentIndex(0)
 
         self.time_label = QLabel("Time between iterations (ms):", self)
-        self.time_label.setGeometry(QRect(50, 320, 180, 30))
+        self.time_label.setGeometry(QRect(50, 290, 180, 30))
 
         self.time_dropdown = QComboBox(self)
-        self.time_dropdown.setGeometry(QRect(250, 320, 120, 25))
+        self.time_dropdown.setGeometry(QRect(250, 290, 120, 25))
         self.time_dropdown.addItems([f"{i}" for i in range(0, 1100, 100)])
+        self.time_dropdown.setCurrentIndex(0)
 
         self.submit_button = QPushButton("Start Simulation", self)
         self.submit_button.setGeometry(QRect(50, 360, 150, 30))
@@ -181,8 +186,24 @@ class App(QWidget):
         self.show()
 
     def on_submit(self):
-        self.N = int(self.input1.text())
-        self.I = int(self.input2.text())
+        self.N = int(self.input_n.text())
+        self.I = int(self.input_i.text())
+        self.FT = float(self.input_ft.text())
+        self.RT = float(self.input_rt.text())
+        self.FR_min = float(self.input_fr_min.text())
+        self.FR_max = float(self.input_fr_max.text())
+        self.eps = float(self.input_eps.text())
+        self.OF = self.of_dropdown.currentText()
+        self.frequency = int(self.time_dropdown.currentText())
+        print("N =", self.N)
+        print("I =", self.I)
+        print("FT =", self.FT)
+        print("RT =", self.RT)
+        print("FR_min =", self.FR_min)
+        print("FR_max =", self.FR_max)
+        print("eps =", self.eps)
+        print("OF =", self.OF)
+        print("frequency =", self.frequency)
         self.console.clear()  
         self.submit_button.setText("Reset Simulation") 
         self.submit_button.clicked.disconnect()
@@ -205,9 +226,15 @@ class App(QWidget):
         self.timer.stop()
         self.console.clear() 
         self.iterations = 0  
-        self.input1.setText(self.N_DEFAULT_VALUE)  
-        self.input2.setText(self.I_DEFAULT_VALUE)
-        self.input3.setText(self.D_DEFAULT_VALUE)
+        self.input_n.setText(self.N_DEFAULT_VALUE)  
+        self.input_i.setText(self.I_DEFAULT_VALUE)
+        self.input_ft.setText(self.FT_DEFAULT_VALUE)
+        self.input_rt.setText(self.RT_DEFAULT_VALUE)
+        self.input_fr_min.setText(self.FR_MIN_VALUE)
+        self.input_fr_max.setText(self.FR_MAX_VALUE)
+        self.input_eps.setText(self.EPS_VALUE)
+        self.of_dropdown.setCurrentIndex(0)
+        self.time_dropdown.setCurrentIndex(0)
         self.submit_button.setText("Start Simulation")  
         self.submit_button.clicked.disconnect()
         self.submit_button.clicked.connect(self.on_submit)  
