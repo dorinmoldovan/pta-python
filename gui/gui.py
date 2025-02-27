@@ -11,6 +11,7 @@ from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
 from PyQt6.QtGui import QIntValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
 
 import benchmarks
+from pta.PTA import PTA
 
 class App(QWidget):
     N_DEFAULT_VALUE = "30"
@@ -219,16 +220,20 @@ class App(QWidget):
         print(func_details[1])
         print(func_details[2])
         print(func_details[3])
+        self.pta = PTA(getattr(benchmarks, func_details[0]), func_details[1], func_details[2], func_details[3], \
+            self.N, self.I, self.eps, self.FT, self.RT, self.FR_min, self.FR_max)
         self.console.clear()  
         self.submit_button.setText("Reset Simulation") 
         self.submit_button.clicked.disconnect()
         self.submit_button.clicked.connect(self.on_reset) 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_gui)
-        self.timer.start(1000)
+        self.timer.start(self.frequency)
 
     def update_gui(self):
         if self.iterations < self.I:
+            gBestScore, Ripe_score, Unripe_score = self.pta.iterate()
+            print("Scores ", gBestScore, " ", Ripe_score, " ", Unripe_score)
             self.iterations += 1
             self.console.append(f"Iteration = {self.iterations}")
         else:
