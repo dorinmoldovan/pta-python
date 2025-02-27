@@ -10,6 +10,8 @@ from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QTextEdit, QLabel, 
 from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
 from PyQt6.QtGui import QIntValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
 
+import benchmarks
+
 class App(QWidget):
     N_DEFAULT_VALUE = "30"
     I_DEFAULT_VALUE = "1000"
@@ -212,6 +214,11 @@ class App(QWidget):
         print("eps =", self.eps)
         print("OF =", self.OF)
         print("frequency =", self.frequency)
+        func_details = benchmarks.getFunctionDetails(self.OF)
+        print(func_details[0])
+        print(func_details[1])
+        print(func_details[2])
+        print(func_details[3])
         self.console.clear()  
         self.submit_button.setText("Reset Simulation") 
         self.submit_button.clicked.disconnect()
