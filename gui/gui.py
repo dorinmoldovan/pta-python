@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QTextEdit, QLabel, QComboBox
 from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
-from PyQt6.QtGui import QIntValidator, QDoubleValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
+from PyQt6.QtGui import QIntValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
 
 class App(QWidget):
     N_DEFAULT_VALUE = "30"
