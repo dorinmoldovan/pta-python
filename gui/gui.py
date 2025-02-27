@@ -1,3 +1,11 @@
+"""
+Created in 2025
+
+@author: Dorin Moldovan
+
+This work was created with assistance from Microsoft Copilot.
+"""
+
 from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QTextEdit, QLabel, QComboBox
 from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
 from PyQt6.QtGui import QIntValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
