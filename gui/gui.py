@@ -3,7 +3,7 @@ from PyQt6.QtCore import QTimer, QRect, Qt, QRegularExpression
 from PyQt6.QtGui import QIntValidator, QDoubleValidator, QPalette, QColor, QPixmap, QRegularExpressionValidator
 
 class App(QWidget):
-    N_DEFAULT_VALUE = "50"
+    N_DEFAULT_VALUE = "30"
     I_DEFAULT_VALUE = "1000"
     FT_DEFAULT_VALUE = "0.8"
     RT_DEFAULT_VALUE = "0.2"
