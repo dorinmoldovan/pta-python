@@ -169,7 +169,7 @@ class App(QWidget):
         scaled_flowers_pixmap = flowers_pixmap.scaled(self.plum_flowers_label.size(), Qt.AspectRatioMode.KeepAspectRatio)
         self.plum_flowers_label.setPixmap(scaled_flowers_pixmap)
 
-        self.iteration_label = QLabel("Iteration number (#):", self)
+        self.iteration_label = QLabel("Current iteration:", self)
         self.iteration_label.setGeometry(QRect(50, 850, 200, 30))
         
         self.iteration = QLineEdit(self)
@@ -206,20 +206,7 @@ class App(QWidget):
         self.eps = float(self.input_eps.text())
         self.OF = self.of_dropdown.currentText()
         self.frequency = int(self.time_dropdown.currentText())
-        print("N =", self.N)
-        print("I =", self.I)
-        print("FT =", self.FT)
-        print("RT =", self.RT)
-        print("FR_min =", self.FR_min)
-        print("FR_max =", self.FR_max)
-        print("eps =", self.eps)
-        print("OF =", self.OF)
-        print("frequency =", self.frequency)
         func_details = benchmarks.getFunctionDetails(self.OF)
-        print(func_details[0])
-        print(func_details[1])
-        print(func_details[2])
-        print(func_details[3])
         self.pta = PTA(getattr(benchmarks, func_details[0]), func_details[1], func_details[2], func_details[3], \
             self.N, self.I, self.eps, self.FT, self.RT, self.FR_min, self.FR_max)
         self.console.clear()  
@@ -233,9 +220,18 @@ class App(QWidget):
     def update_gui(self):
         if self.iterations < self.I:
             gBestScore, Ripe_score, Unripe_score = self.pta.iterate()
-            print("Scores ", gBestScore, " ", Ripe_score, " ", Unripe_score)
             self.iterations += 1
-            self.console.append(f"Iteration = {self.iterations}")
+            formatted_Ripe_score = "{:.6e}".format(Ripe_score)
+            self.ripe_fitness_input.setText(formatted_Ripe_score)
+            formatted_Unripe_score = "{:.6e}".format(Unripe_score)
+            self.unripe_fitness_input.setText(formatted_Unripe_score)
+            formatted_iteration = f"iteration #{self.iterations:03d}"
+            self.iteration.setText(formatted_iteration)
+            formatted_gbest = "{:.6e}".format(gBestScore)
+            self.gbest.setText(formatted_gbest)
+            if self.iterations % 10 == 0:
+                logLine = "At iteration " + str(self.iterations) + " the best fitness is " + formatted_gbest
+                self.console.append(logLine)
         else:
             self.timer.stop()  
             self.submit_button.setText("Reset Simulation")  
@@ -255,6 +251,10 @@ class App(QWidget):
         self.input_eps.setText(self.EPS_VALUE)
         self.of_dropdown.setCurrentIndex(0)
         self.time_dropdown.setCurrentIndex(0)
+        self.ripe_fitness_input.setText("")
+        self.unripe_fitness_input.setText("")
+        self.iteration.setText("")
+        self.gbest.setText("")
         self.submit_button.setText("Start Simulation")  
         self.submit_button.clicked.disconnect()
         self.submit_button.clicked.connect(self.on_submit)  
