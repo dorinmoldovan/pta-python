@@ -1,3 +1,13 @@
+"""
+Created in 2025
+
+@author: Dorin Moldovan
+
+This work was created with assistance from Microsoft Copilot.
+
+Inspired and adapted from EvoloPy and evolopy-pta-extension projects.
+"""
+
 import random
 import numpy
 
