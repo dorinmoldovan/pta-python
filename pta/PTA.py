@@ -39,7 +39,7 @@ class PTA:
 
         self.flowers = numpy.zeros((self.PopSize, self.dim))
         for i in range(dim):
-            self.flowers[:, i] = numpy.random.uniform(0, 1, PopSize) * (self.ub[i] - self.lb[i]) + self.lb[i]
+            self.flowers[:, i] = numpy.random.uniform(0, 1, self.PopSize) * (self.ub[i] - self.lb[i]) + self.lb[i]
             self.plums[:, i] = self.flowers[:, i]
 
         for i in range(0, self.PopSize):
